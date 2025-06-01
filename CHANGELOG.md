@@ -1,4 +1,5 @@
-[0.0] - 2025-5-28
+# [0.0] - 2025-5-17
 
-Archivos base para la estructura del proyecto
-Archivos de documentacion del proyecto (README, CHANGELOG, GITIGNORE,ETC).
+### Added
+- Archivos base para la estructura del proyecto
+- Archivos de documentación del proyecto (README, CHANGELOG, .GITIGNORE, etc).
