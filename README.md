@@ -30,7 +30,8 @@ The main goal is to survive as long as possible, scoring points while the diffic
 
 ## Project Wiki
 The full project documentation (proposal, design, screenshots, etc.) is available in the **Wiki**:  
-👉 [ViruzRun Wiki]((https://github.com/PazMauro/ViruzRun/wiki))
+👉 [ViruzRun Wiki](https://github.com/PazMauro/ViruzRun/wiki)
+
 
 ---
 
