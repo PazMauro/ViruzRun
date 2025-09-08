@@ -1,36 +1,43 @@
 # ViruzRun
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
+## Team Members
+- Mauro Paz  
+- Gael Rechusky  
+- Dylan González  
 
-This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
+---
 
-## Platforms
+## Game Description
+**ViruzRun** is a game developed with **LibGDX** where the player must dodge obstacles and enemies that represent viruses in a fast-paced and challenging environment.  
+The main goal is to survive as long as possible, scoring points while the difficulty gradually increases.  
 
-- `core`: Main module with the application logic shared by all platforms.
-- `lwjgl3`: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
-- `html`: Web platform using GWT and WebGL. Supports only Java projects.
+---
 
-## Gradle
+## Technologies Used
+- **Language:** Java  
+- **Framework:** [LibGDX](https://libgdx.com/)  
+- **IDE:** IntelliJ IDEA / Eclipse (any IDE compatible with Gradle)  
+- **Build System:** Gradle  
+- **Version Control:** Git + GitHub  
 
-This project uses [Gradle](https://gradle.org/) to manage dependencies.
-The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
-Useful Gradle tasks and flags:
+---
 
-- `--continue`: when using this flag, errors will not stop the tasks from running.
-- `--daemon`: thanks to this flag, Gradle daemon will be used to run chosen tasks.
-- `--offline`: when using this flag, cached dependency archives will be used.
-- `--refresh-dependencies`: this flag forces validation of all dependencies. Useful for snapshot versions.
-- `build`: builds sources and archives of every project.
-- `cleanEclipse`: removes Eclipse project data.
-- `cleanIdea`: removes IntelliJ project data.
-- `clean`: removes `build` folders, which store compiled classes and built archives.
-- `eclipse`: generates Eclipse project data.
-- `html:dist`: compiles GWT sources. The compiled application can be found at `html/build/dist`: you can use any HTTP server to deploy it.
-- `html:superDev`: compiles GWT sources and runs the application in SuperDev mode. It will be available at [localhost:8080/html](http://localhost:8080/html). Use only during development.
-- `idea`: generates IntelliJ project data.
-- `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
-- `lwjgl3:run`: starts the application.
-- `test`: runs unit tests (if any).
+## Target Platforms
+- Desktop (Windows, Linux, MacOS)  
+- Web (HTML5 via GWT)  
 
-Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
-For example, `core:clean` removes `build` folder only from the `core` project.
+---
+
+## Project Wiki
+The full project documentation (proposal, design, screenshots, etc.) is available in the **Wiki**:  
+👉 [ViruzRun Wiki](https://github.com/PazMauro/ViruzRun/wiki)
+
+
+---
+
+## 🚀 Installation and Execution
+
+### Clone the Repository
+```bash
+git clone https://github.com/username/ViruzRun.git
+cd ViruzRun
