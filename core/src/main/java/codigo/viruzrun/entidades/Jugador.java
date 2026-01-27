@@ -2,29 +2,65 @@ package codigo.viruzrun.entidades;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Jugador {
-    private Texture textura;
+
     private float x, y;
+    private float velocidadY;
+    private boolean enSuelo;
+    private boolean eliminado;
 
-    public Jugador() {
-        textura = new Texture("jugador.png"); // pon esta imagen en assets/
-        x = 100;
-        y = 100;
+    private Texture sprite;
+    private Rectangle hitbox;
+
+    public Jugador(float x, float y, String textura) {
+        this.x = x;
+        this.y = y;
+        this.sprite = new Texture(textura);
+        this.enSuelo = true;
+        this.eliminado = false;
+
+        this.hitbox = new Rectangle(x, y, 40, 40);
     }
 
-    public void update(float delta) {
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) x -= 200 * delta;
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) x += 200 * delta;
+    public void actualizar(float delta) {
+        if (eliminado) return;
+
+        velocidadY -= 500 * delta;
+        y += velocidadY * delta;
+
+        if (y <= 80) {
+            y = 80;
+            enSuelo = true;
+            velocidadY = 0;
+        }
+
+        hitbox.setPosition(x + 8, y + 8);
     }
 
-    public void render(SpriteBatch batch) {
-        batch.draw(textura, x, y);
+    public void dibujar(SpriteBatch batch) {
+        if (!eliminado) {
+            batch.draw(sprite, x, y, 60, 60);
+        }
     }
 
-    public void dispose() {
-        textura.dispose();
+    public void saltar() {
+        if (enSuelo && !eliminado) {
+            velocidadY = 300;
+            enSuelo = false;
+        }
+    }
+
+    public Rectangle getHitbox() {
+        return hitbox;
+    }
+
+    public boolean estaEliminado() {
+        return eliminado;
+    }
+
+    public void eliminar() {
+        eliminado = true;
     }
 }
