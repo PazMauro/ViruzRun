@@ -1,43 +1,42 @@
 # ViruzRun
 
-## Team Members
+## Integrantes del Equipo
 - Mauro Paz  
 - Gael Rechusky  
 - Dylan González  
 
 ---
 
-## Game Description
-**ViruzRun** is a game developed with **LibGDX** where the player must dodge obstacles and enemies that represent viruses in a fast-paced and challenging environment.  
-The main goal is to survive as long as possible, scoring points while the difficulty gradually increases.  
+## Descripción del Juego
+**ViruzRun** es un juego desarrollado con **LibGDX** en el que el jugador debe esquivar obstáculos y enemigos que representan virus en un entorno rápido y desafiante.  
+El objetivo principal es sobrevivir el mayor tiempo posible, sumando puntos mientras la dificultad aumenta de forma progresiva.  
 
 ---
 
-## Technologies Used
-- **Language:** Java  
+## Tecnologías Utilizadas
+- **Lenguaje:** Java  
 - **Framework:** [LibGDX](https://libgdx.com/)  
-- **IDE:** IntelliJ IDEA / Eclipse (any IDE compatible with Gradle)  
-- **Build System:** Gradle  
-- **Version Control:** Git + GitHub  
+- **IDE:** IntelliJ IDEA / Eclipse (cualquier IDE compatible con Gradle)  
+- **Sistema de Construcción:** Gradle  
+- **Control de Versiones:** Git + GitHub  
 
 ---
 
-## Target Platforms
-- Desktop (Windows, Linux, MacOS)  
-- Web (HTML5 via GWT)  
+## Plataformas Objetivo
+- Escritorio (Windows, Linux, MacOS)  
+- Web (HTML5 mediante GWT)  
 
 ---
 
-## Project Wiki
-The full project documentation (proposal, design, screenshots, etc.) is available in the **Wiki**:  
+## Wiki del Proyecto
+La documentación completa del proyecto (propuesta, diseño, capturas de pantalla, etc.) se encuentra disponible en la **Wiki**:  
 👉 [ViruzRun Wiki](https://github.com/PazMauro/ViruzRun/wiki)
 
-
 ---
 
-## 🚀 Installation and Execution
+## 🚀 Instalación y Ejecución
 
-### Clone the Repository
+### Clonar el Repositorio
 ```bash
 git clone https://github.com/username/ViruzRun.git
 cd ViruzRun
