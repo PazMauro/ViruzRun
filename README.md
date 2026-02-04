@@ -6,7 +6,7 @@
 ---
 
 ## Descripción del Juego
-**ViruzRun** es un juego desarrollado con **LibGDX** en el que el jugador debe esquivar obstáculos y enemigos que representan virus en un entorno rápido y desafiante.  
+**ViruzRun** es un juego desarrollado con **LibGDX** en el que el jugador debe esquivar obstáculos que representan virus en un entorno rápido y desafiante.  
 El objetivo principal es sobrevivir el mayor tiempo posible, sumando puntos mientras la dificultad aumenta de forma progresiva.  
 
 ---
@@ -14,7 +14,7 @@ El objetivo principal es sobrevivir el mayor tiempo posible, sumando puntos mien
 ## Tecnologías Utilizadas
 - **Lenguaje:** Java  
 - **Framework:** [LibGDX](https://libgdx.com/)  
-- **IDE:** IntelliJ IDEA / Eclipse (cualquier IDE compatible con Gradle)  
+- **IDE:** Eclipse  
 - **Sistema de Construcción:** Gradle  
 - **Control de Versiones:** Git + GitHub  
 
