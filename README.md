@@ -2,8 +2,6 @@
 
 ## Integrantes del Equipo
 - Mauro Paz  
-- Gael Rechusky  
-- Dylan González  
 
 ---
 
