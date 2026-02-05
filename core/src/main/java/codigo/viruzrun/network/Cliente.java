@@ -9,9 +9,9 @@ public class Cliente {
     private InetAddress ip;
     private int puerto;
 
-    public Cliente(int num, InetAddress ip, int puerto ) {
+    public Cliente(int num, InetAddress ip, int puerto) {
         this.num = num;
-        this.id = ip.toString() + ":" + puerto ;
+        this.id = ip.toString() + ":" + puerto;
         this.ip = ip;
         this.puerto = puerto ;
     }
@@ -32,3 +32,4 @@ public class Cliente {
         return num;
     }
 }
+

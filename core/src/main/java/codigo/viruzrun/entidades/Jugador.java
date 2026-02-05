@@ -14,10 +14,10 @@ public class Jugador {
     private Texture sprite;
     private Rectangle hitbox;
 
-    public Jugador(float x, float y, String textura) {
+    public Jugador(float x, float y, String texture) {
         this.x = x;
         this.y = y;
-        this.sprite = new Texture(textura);
+        this.sprite = new Texture(texture);
         this.enSuelo = true;
         this.eliminado = false;
 
@@ -64,3 +64,4 @@ public class Jugador {
         eliminado = true;
     }
 }
+

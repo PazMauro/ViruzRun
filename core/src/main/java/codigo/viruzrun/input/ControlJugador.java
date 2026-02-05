@@ -1,8 +1,8 @@
 package codigo.viruzrun.input;
 
+import codigo.viruzrun.entidades.Jugador;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import codigo.viruzrun.entidades.Jugador;
 
 public class ControlJugador implements InputProcessor {
 
@@ -17,13 +17,13 @@ public class ControlJugador implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
 
-        // JUGADOR 1 → SALTA CON ESPACIO
+        // JUGADOR 1  SALTA CON ESPACIO
         if (keycode == Input.Keys.SPACE) {
             jugador1.saltar();
             return true;
         }
 
-        // JUGADOR 2 → SALTA CON W
+        // JUGADOR 2  SALTA CON W
         if (keycode == Input.Keys.W) {
             jugador2.saltar();
             return true;
@@ -41,3 +41,4 @@ public class ControlJugador implements InputProcessor {
     @Override public boolean scrolled(float amountX, float amountY) { return false; }
     @Override public boolean touchCancelled(int x, int y, int pointer, int button) { return false; }
 }
+

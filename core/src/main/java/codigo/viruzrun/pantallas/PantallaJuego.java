@@ -1,35 +1,25 @@
 package codigo.viruzrun.pantallas;
 
+import codigo.viruzrun.Main;
+import codigo.viruzrun.entidades.Jugador;
+import codigo.viruzrun.entidades.Obstaculo;
+import codigo.viruzrun.network.Controlador;
+import codigo.viruzrun.network.HiloServidor;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import codigo.viruzrun.Main;
-import codigo.viruzrun.entidades.Jugador;
-import codigo.viruzrun.entidades.Obstaculo;
-import codigo.viruzrun.input.ControlJugador;
-import com.badlogic.gdx.graphics.Color;
-
-import codigo.viruzrun.network.Controlador;
-import codigo.viruzrun.network.HiloServidor;
-
 public class PantallaJuego implements Screen, Controlador {
 
     public static final float ANCHO = 800;
     public static final float ALTO = 480;
-
-    private static final float SUELO_Y = 90;
-    private static final float ALTURA_SUELO = 10;
 
     private static final int PUNTOS_POR_NIVEL = 300;
     private static final float AUMENTO_VELOCIDAD = 20f;
@@ -39,11 +29,8 @@ public class PantallaJuego implements Screen, Controlador {
     private OrthographicCamera camara;
     private Viewport viewport;
 
-    private Texture fondo;
-    private Texture fondoNormal;
-    private Texture fondoDificil;
-
-    private ShapeRenderer shapeRenderer;
+    private Texture spriteRojo;
+    private Texture spriteVioleta;
 
     private Jugador jugador1;
     private Jugador jugador2;
@@ -69,13 +56,19 @@ public class PantallaJuego implements Screen, Controlador {
     private int nivelActual = 0;
     private boolean fondoCambiado = false;
 
-    private Music musicaFondo;
-    private Sound sonidoMuerte;
-    
+    private GlyphLayout layout;
+
     private HiloServidor servidor;
-    
+
     private int jugadoresConectados = 0;
     private boolean partidaEmpezada = false;
+
+    private static final int MAX_JUGADORES = 2;
+
+    private static final float SPRITE_TAM = 125f;
+    private static final float SPRITE_Y = 170f;
+    private static final float SPRITE_X_IZQ = 40f;
+    private static final float SPRITE_X_DER = ANCHO - SPRITE_X_IZQ - SPRITE_TAM;
 
     public PantallaJuego(Main juego) {
         this.juego = juego;
@@ -84,39 +77,32 @@ public class PantallaJuego implements Screen, Controlador {
         viewport = new FitViewport(ANCHO, ALTO, camara);
         viewport.apply();
 
-        fondoNormal = new Texture("fondo.png");
-        fondoDificil = new Texture("fondo_dificil.png");
-        fondo = fondoNormal;
-
-        shapeRenderer = new ShapeRenderer();
+        spriteRojo = new Texture("jugador.png");
+        spriteVioleta = new Texture("jugador2.png");
 
         jugador1 = new Jugador(50, 80, "jugador.png");
-        jugador2 = new Jugador(120, 80, "jugador2.png");
+        jugador2 = new Jugador(ANCHO - 110, 80, "jugador2.png");
 
         jugadores = new Array<>();
-        jugadores.add(jugador1); // índice 0 → jugador 1
-        jugadores.add(jugador2); // índice 1 → jugador 2
-        
-        Gdx.input.setInputProcessor(new ControlJugador(jugador1, jugador2));
+        jugadores.add(jugador1); 
+        jugadores.add(jugador2); 
+
+        // En el servidor no hay control local de jugadores.
 
         obstaculos = new Array<>();
-        
+
         generarTiempoAleatorio();
 
-        musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("musicafondo.mp3"));
-        musicaFondo.setLooping(true);
-        musicaFondo.setVolume(Main.volumenGlobal);
-        musicaFondo.play();
+        layout = new GlyphLayout();
 
-        sonidoMuerte = Gdx.audio.newSound(Gdx.files.internal("muerte.wav"));
-       
         servidor = new HiloServidor(this);
         servidor.start();
-
 
     }
 
     private void actualizar(float delta) {
+
+        if (!partidaEmpezada) return;
 
         if (jugador1Vivo) {
             jugador1.actualizar(delta);
@@ -131,7 +117,7 @@ public class PantallaJuego implements Screen, Controlador {
         int puntosMax = Math.max(puntosJugador1, puntosJugador2);
         int nuevoNivel = puntosMax / PUNTOS_POR_NIVEL;
 
-        // 🔼 Subida de dificultad cada 300 puntos
+        // Subida de dificultad cada 300 puntos
         if (nuevoNivel > nivelActual) {
             nivelActual = nuevoNivel;
             velocidadJuego += AUMENTO_VELOCIDAD;
@@ -142,9 +128,8 @@ public class PantallaJuego implements Screen, Controlador {
             }
         }
 
-        // 🔥 Cambio grande a los 1500 puntos
+        // Cambio grande a los 1500 puntos
         if (puntosMax >= 1500 && !fondoCambiado) {
-            fondo = fondoDificil;
             fondoCambiado = true;
 
             velocidadJuego = 220f;
@@ -152,10 +137,7 @@ public class PantallaJuego implements Screen, Controlador {
             tiempoMax = 1.6f;
         }
 
-        if (!partidaEmpezada) return;
-
         if (servidor != null && servidor.isPartidaIniciada()) {
-
             tiempoTranscurrido += delta;
 
             if (tiempoTranscurrido >= tiempoSiguienteObstaculo) {
@@ -165,21 +147,17 @@ public class PantallaJuego implements Screen, Controlador {
             }
         }
 
-
-
         for (Obstaculo o : obstaculos) {
             o.actualizar(delta, velocidadJuego);
 
             if (jugador1Vivo && jugador1.getHitbox().overlaps(o.getHitbox())) {
                 jugador1Vivo = false;
                 jugador1.eliminar();
-                sonidoMuerte.play(Main.volumenGlobal);
             }
 
             if (jugador2Vivo && jugador2.getHitbox().overlaps(o.getHitbox())) {
                 jugador2Vivo = false;
                 jugador2.eliminar();
-                sonidoMuerte.play(Main.volumenGlobal);
             }
         }
     }
@@ -188,13 +166,7 @@ public class PantallaJuego implements Screen, Controlador {
     public void render(float delta) {
         actualizar(delta);
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            musicaFondo.stop();
-            if (servidor != null) servidor.cerrar();
-            juego.setScreen(new PantallaMenu(juego));
-            return;
-        }
-
+        // Sin entrada local en el servidor.
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -203,98 +175,99 @@ public class PantallaJuego implements Screen, Controlador {
         juego.batch.setProjectionMatrix(camara.combined);
 
         juego.batch.begin();
-        juego.batch.draw(fondo, 0, 0, ANCHO, ALTO);
+        juego.batch.draw(spriteRojo, SPRITE_X_IZQ, SPRITE_Y, SPRITE_TAM, SPRITE_TAM);
+        juego.batch.draw(spriteVioleta, SPRITE_X_DER, SPRITE_Y, SPRITE_TAM, SPRITE_TAM);
 
-        if (jugador1Vivo) jugador1.dibujar(juego.batch);
-        if (jugador2Vivo) jugador2.dibujar(juego.batch);
+        layout.setText(juego.font, "Servidor en ejecucion");
+        juego.font.draw(
+            juego.batch,
+            "Servidor en ejecucion",
+            ANCHO / 2f - (layout.width / 2f),
+            ALTO - 30
+        );
 
-        for (Obstaculo o : obstaculos) o.dibujar(juego.batch);
-
-        juego.font.draw(juego.batch, "Jugador 1: " + puntosJugador1, 20, 460);
-        juego.font.draw(juego.batch, "Jugador 2: " + puntosJugador2, 20, 430);
-        
-        if (!jugador1Vivo) {
-            juego.font.draw(juego.batch, "Jugador 1 eliminado", 300, 350);
-            servidor.enviarMensajeATodos("ELIMINADO:1");
-        }
-        
-        if (!jugador2Vivo){
-            juego.font.draw(juego.batch, "Jugador 2 eliminado", 300, 320);
-        	servidor.enviarMensajeATodos("ELIMINADO:2");
-        }
-        
-        juego.font.draw(juego.batch, "Nivel: " + nivelActual, 650, 460);
+        int conectados = servidor != null ? servidor.getClientesConectados() : 0;
+        String textoConectados = "Conectados: " + conectados + "/" + MAX_JUGADORES;
+        layout.setText(juego.font, textoConectados);
+        juego.font.draw(
+            juego.batch,
+            textoConectados,
+            ANCHO / 2f - (layout.width / 2f),
+            ALTO - 55
+        );
 
         juego.batch.end();
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.rect(0, SUELO_Y, ANCHO, ALTURA_SUELO);
-        shapeRenderer.end();
+        // Fondo totalmente negro, sin suelo.
 
-        if (!jugador1Vivo && !jugador2Vivo) {
-            juego.batch.begin();
-            juego.font.draw(juego.batch, "GAME OVER", 350, 240);
-            juego.font.draw(juego.batch, "Presiona cualquier tecla", 300, 200);
-            juego.batch.end();
-
-            if (Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
-                musicaFondo.stop();
-                juego.setScreen(new PantallaJuego(juego));
-            }
-        }
     }
-    
+
     private void generarTiempoAleatorio() {
         tiempoSiguienteObstaculo = MathUtils.random(tiempoMin, tiempoMax);
         tiempoTranscurrido = 0;
     }
-    
+
     @Override
     public void conexion(int jugador) {
         jugadoresConectados++;
         System.out.println("Jugador " + jugador + " conectado");
 
-        if (jugadoresConectados >= 1) {
+        if (jugadoresConectados >= 2 && !partidaEmpezada) {
+            reiniciarEstadoPartida();
             partidaEmpezada = true;
             generarTiempoAleatorio();
-            servidor.enviarMensajeATodos("EMPEZAR");
             System.out.println("Partida iniciada");
         }
 
     }
-    
+
     @Override
     public void salto(int jugador) {
-    	jugadores.get(jugador - 1).saltar();
+        jugadores.get(jugador - 1).saltar();
     }
 
     @Override
     public void desconectado(int jugador) {
         System.out.println("Jugador " + jugador + " desconectado");
-        musicaFondo.stop();
-        if (servidor != null) servidor.cerrar();
+        reiniciarEstadoPartida();
+        cerrarServidor();
         juego.setScreen(new PantallaMenu(juego));
-        
-    }
 
+    }
 
     @Override public void resize(int width, int height) { viewport.update(width, height, true); }
     @Override public void show() {}
-    @Override public void pause() { musicaFondo.pause(); }
-    @Override public void resume() { musicaFondo.play(); }
+    @Override public void pause() {}
+    @Override public void resume() {}
     @Override public void hide() {}
 
     @Override
     public void dispose() {
-        if (servidor != null) servidor.cerrar();
-        fondoNormal.dispose();
-        fondoDificil.dispose();
-        shapeRenderer.dispose();
-        musicaFondo.dispose();
-        sonidoMuerte.dispose();
+        cerrarServidor();
+        if (spriteRojo != null) spriteRojo.dispose();
+        if (spriteVioleta != null) spriteVioleta.dispose();
     }
 
+    private void reiniciarEstadoPartida() {
+        partidaEmpezada = false;
+        jugadoresConectados = 0;
+        jugador1Vivo = true;
+        jugador2Vivo = true;
+        puntosJugador1 = 0;
+        puntosJugador2 = 0;
+        nivelActual = 0;
+        velocidadJuego = 140f;
+        fondoCambiado = false;
+        tiempoMin = 1.0f;
+        tiempoMax = 2.5f;
+        tiempoTranscurrido = 0f;
+        if (obstaculos != null) {
+            obstaculos.clear();
+        }
+    }
 
-
+    private void cerrarServidor() {
+        if (servidor != null) servidor.cerrar();
+    }
 }
+
