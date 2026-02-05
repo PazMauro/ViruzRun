@@ -1,42 +1,47 @@
 package codigo.viruzrun.input;
 
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import codigo.viruzrun.entidades.Jugador;
 import codigo.viruzrun.network.HiloCliente;
 import codigo.viruzrun.pantallas.PantallaJuego;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 
 public class ControlJugador implements InputProcessor {
+
+    private static final String MSG_SALTO = "SALTO";
 
     private Jugador jugador1;
     private Jugador jugador2;
 
     private HiloCliente cliente;
     private PantallaJuego pantalla;
+    private int nroJugador;
 
-    public ControlJugador(Jugador j1, Jugador j2, HiloCliente cliente, PantallaJuego pantalla) {
+    public ControlJugador(Jugador j1, Jugador j2, HiloCliente cliente, PantallaJuego pantalla, int nroJugador) {
         this.jugador1 = j1;
         this.jugador2 = j2;
         this.cliente = cliente;
         this.pantalla = pantalla;
+        this.nroJugador = nroJugador;
+    }
+
+    public void setNumeroJugador(int numero) {
+        this.nroJugador = numero;
     }
 
     @Override
     public boolean keyDown(int keycode) {
 
         if (!pantalla.isJuegoEmpezado()) return false;
+        if (nroJugador <= 0) return false;
 
-        // JUGADOR 1 → SPACE
         if (keycode == Input.Keys.SPACE) {
-            jugador1.saltar();                  // 🔹 salto local
-            cliente.enviarMensaje("SALTO:1");   // 🔹 aviso al servidor
-            return true;
-        }
-
-        // JUGADOR 2 → W
-        if (keycode == Input.Keys.W) {
-            jugador2.saltar();                  // 🔹 salto local
-            cliente.enviarMensaje("SALTO:2");   // 🔹 aviso al servidor
+            if (nroJugador == 1) {
+                jugador1.saltar();
+            } else if (nroJugador == 2 && jugador2 != null) {
+                jugador2.saltar();
+            }
+            cliente.enviarMensaje(MSG_SALTO + ":" + nroJugador);
             return true;
         }
 
