@@ -82,12 +82,6 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) y este
 ### Cambiado
 - `PantallaMenu`: navegacion entre menu y juego.
 
-## [0.1.22] - 2026-01-23
-### Agregado
-- `ControlJugador`: control de entradas locales para reglas.
-### Corregido
-- `ControlJugador`: lectura de input para evitar doble activacion.
-
 ## [0.1.21] - 2026-01-22
 ### Agregado
 - `Obstaculo`: comportamiento base local.
