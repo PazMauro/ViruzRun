@@ -130,7 +130,7 @@ public class HiloServidor extends Thread {
 
             controlador.conexion(clientesConectados);
 
-            // ACA ESTA LA CLAVE
+            // ACA ESTA LA CLAVE
             if (clientesConectados == MAX_CLIENTES) {
                 partidaIniciada = true;
                 enviarMensajeATodos(MSG_EMPEZAR);
@@ -241,4 +241,5 @@ public class HiloServidor extends Thread {
     }
 
 }
+
 
