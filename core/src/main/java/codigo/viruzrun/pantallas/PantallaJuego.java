@@ -146,7 +146,7 @@ public class PantallaJuego implements Screen, Controlador {
         int puntosMax = Math.max(puntosJugador1, puntosJugador2);
         int nuevoNivel = puntosMax / PUNTOS_POR_NIVEL;
 
-        // ðŸ”¼ Subida de dificultad cada 300 puntos
+        // Subida de dificultad cada 300 puntos
         if (nuevoNivel > nivelActual) {
             nivelActual = nuevoNivel;
             velocidadJuego += AUMENTO_VELOCIDAD;
@@ -157,7 +157,7 @@ public class PantallaJuego implements Screen, Controlador {
             }
         }
 
-        // ðŸ”¥ CAMBIO FUERTE A LOS 1500 PUNTOS (ESTO QUEDA)
+        // CAMBIO FUERTE A LOS 1500 PUNTOS (ESTO QUEDA)
         if (puntosMax >= 1500 && !fondoCambiado) {
             fondo = fondoDificil;
             fondoCambiado = true;
@@ -166,8 +166,6 @@ public class PantallaJuego implements Screen, Controlador {
             tiempoMin = 0.6f;
             tiempoMax = 1.6f;
         }
-
-        // -------- SPAWN OBSTÃCULOS --------
 
         // -------- COLISIONES --------
         for (Obstaculo o : obstaculos) {
@@ -379,6 +377,7 @@ public class PantallaJuego implements Screen, Controlador {
         detenerMusicaEnHiloPrincipal();
         cerrarCliente();
     }
+
 
     @Override
     public void clienteDesconectado(int nroJugador) {
